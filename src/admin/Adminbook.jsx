@@ -67,40 +67,42 @@ const AdminBooks = ({ user }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     setBtnLoading(true);
-
+  
     const myForm = new FormData();
     myForm.append("title", title);
     myForm.append("author", author);
     myForm.append("description", description);
     myForm.append("price", price);
     myForm.append("category", category);
-    myForm.append("coverImage", image); // Ensure this matches backend expectation
-
+    myForm.append("coverImage", image);
+  
     try {
       const { data } = await axios.post(`${server}/api/book/new`, myForm, {
         headers: {
           token: localStorage.getItem("token"),
-          "Content-Type": "multipart/form-data", // Ensure proper content type
+          "Content-Type": "multipart/form-data",
         },
       });
-
+  
       toast.success(data.message);
       fetchBooks(); // Refresh the list of books
+  
       // Reset form fields
       setTitle("");
       setAuthor("");
       setDescription("");
       setPrice("");
       setCategory("");
-      setImage(null); // Reset image to null
+      setImage(null);
       setImagePrev("");
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.error("Error creating book:", error.response?.data?.message || error.message);
+      toast.error(error.response?.data?.message || "Error creating book");
     } finally {
       setBtnLoading(false); // Ensure loading state is reset
     }
   };
-
+  
   return (
     <Layout>
       <div className="flex flex-col bg-gray-100 lg:flex-row min-h-screen p-6 py-20">

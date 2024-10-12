@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { server } from "../main";
-import BookCard from "../components/bookcard"; // Import BookCard component
+import EbookCard from "../components/ebookcard"; // Import EbookCard component
 
-const AdminBooks = ({ user }) => {
+const AdminEbooks = ({ user }) => {
   const navigate = useNavigate();
 
   // Redirect to home if user is not admin
@@ -16,7 +16,7 @@ const AdminBooks = ({ user }) => {
     }
   }, [user, navigate]);
 
-  // State for form inputs and Books
+  // State for form inputs and eBooks
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
@@ -24,29 +24,30 @@ const AdminBooks = ({ user }) => {
 
   const [image, setImage] = useState(null); // Initialize as null instead of an empty string
   const [imagePrev, setImagePrev] = useState("");
+  const [ebookFile, setEbookFile] = useState(null); // Initialize as null instead of an empty string
   const [btnLoading, setBtnLoading] = useState(false);
-  const [books, setBooks] = useState([]);
-  const [fetchingBooks, setFetchingBooks] = useState(false);
+  const [ebooks, setEbooks] = useState([]);
+  const [fetchingEbooks, setFetchingEbooks] = useState(false);
 
-  // Fetch all Books
-  const fetchBooks = async () => {
-    setFetchingBooks(true);
+  // Fetch all eBooks
+  const fetchEbooks = async () => {
+    setFetchingEbooks(true);
     try {
-      const { data } = await axios.get(`${server}/api/book/all`, {
+      const { data } = await axios.get(`${server}/api/ebook/all`, {
         headers: {
           token: localStorage.getItem("token"),
         },
       });
-      setBooks(data.books);
+      setEbooks(data.ebooks);
     } catch (error) {
-      toast.error("Failed to fetch Books.");
+      toast.error("Failed to fetch eBooks.");
     } finally {
-      setFetchingBooks(false);
+      setFetchingEbooks(false);
     }
   };
 
   useEffect(() => {
-    fetchBooks();
+    fetchEbooks();
   }, []);
 
   // Handle image file selection
@@ -62,7 +63,15 @@ const AdminBooks = ({ user }) => {
     }
   };
 
-  // Submit form for adding new Book
+  // Handle eBook file selection
+  const changeEbookFileHandler = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setEbookFile(file);
+    }
+  };
+
+  // Submit form for adding new eBook
   const submitHandler = async (e) => {
     e.preventDefault();
     setBtnLoading(true);
@@ -73,9 +82,10 @@ const AdminBooks = ({ user }) => {
     myForm.append("description", description);
     myForm.append("price", price);
     myForm.append("coverImage", image);
+    myForm.append("ebookPdf", ebookFile);
 
     try {
-      const { data } = await axios.post(`${server}/api/book/new`, myForm, {
+      const { data } = await axios.post(`${server}/api/ebook/new`, myForm, {
         headers: {
           token: localStorage.getItem("token"),
           "Content-Type": "multipart/form-data",
@@ -83,7 +93,7 @@ const AdminBooks = ({ user }) => {
       });
 
       toast.success(data.message);
-      fetchBooks(); // Refresh the list of Books
+      fetchEbooks(); // Refresh the list of eBooks
       // Clear form fields
       setTitle("");
       setAuthor("");
@@ -91,6 +101,7 @@ const AdminBooks = ({ user }) => {
       setPrice("");
       setImage(null); // Reset to null
       setImagePrev("");
+      setEbookFile(null); // Reset to null
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
@@ -101,28 +112,28 @@ const AdminBooks = ({ user }) => {
   return (
     <Layout>
       <div className="flex flex-col bg-gray-100 lg:flex-row min-h-screen p-6 py-20">
-        {/* Books List */}
+        {/* eBooks List */}
         <div className="lg:w-2/3 lg:pr-6 mb-6 lg:mb-0">
-          <h1 className="text-3xl font-semibold mb-4 text-blue-600">All Books</h1>
-          {fetchingBooks ? (
+          <h1 className="text-3xl font-semibold mb-4 text-blue-600">All eBooks</h1>
+          {fetchingEbooks ? (
             <p className="text-gray-800">Loading...</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {books.length > 0 ? (
-                books.map((book) => (
-                  <BookCard key={book._id} book={book} /> // Use BookCard component
+              {ebooks.length > 0 ? (
+                ebooks.map((ebook) => (
+                  <EbookCard key={ebook._id} ebook={ebook} /> // Use EbookCard component
                 ))
               ) : (
-                <p className="text-gray-800">No Books Yet</p>
+                <p className="text-gray-800">No eBooks Yet</p>
               )}
             </div>
           )}
         </div>
 
-        {/* Add Book Form */}
+        {/* Add eBook Form */}
         <div className="lg:w-1/3">
           <div className="bg-gray-400 p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900">Add Book</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900">Add eBook</h2>
             <form onSubmit={submitHandler}>
               {/* Title Input */}
               <div className="mb-4">
@@ -196,13 +207,30 @@ const AdminBooks = ({ user }) => {
                 )}
               </div>
 
+              {/* eBook File Input */}
+              <div className="mb-4">
+                <label htmlFor="ebookPdf" className="block text-gray-800">eBook File</label>
+                <input
+                  type="file"
+                  id="ebookFile"
+                  required
+                  onChange={changeEbookFileHandler}
+                  className="mt-1 block w-full text-sm text-gray-800
+                     file:mr-4 file:py-2 file:px-4
+                     file:rounded-md file:border-0
+                     file:text-sm file:font-semibold
+                     file:bg-gray-100 file:text-gray-700
+                     hover:file:bg-gray-200"
+                />
+              </div>
+
               {/* Submit Button */}
               <button
                 type="submit"
                 disabled={btnLoading}
                 className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out"
               >
-                {btnLoading ? "Please Wait..." : "Add Book"}
+                {btnLoading ? "Please Wait..." : "Add eBook"}
               </button>
             </form>
           </div>
@@ -212,4 +240,4 @@ const AdminBooks = ({ user }) => {
   );
 };
 
-export default AdminBooks;
+export default AdminEbooks
