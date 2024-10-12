@@ -9,16 +9,22 @@ import NoteCard from "../components/notesCard"; // Import NoteCard component
 const AdminNotes = ({ user }) => {
   const navigate = useNavigate();
 
-  if (user && user.role !== "admin") return navigate("/");
+  // Redirect to home if user is not admin
+  useEffect(() => {
+    if (user && user.role !== "admin") {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
+  // State for form inputs and notes
   const [title, setTitle] = useState("");
-  
+  const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
 
-  const [image, setImage] = useState("");
-  const [imagePrev, setImagePrev] = useState("");
-  const [noteFile, setNoteFile] = useState("");
+  const [coverImage, setCoverImage] = useState(null); // Initialize as null
+  const [coverImagePrev, setCoverImagePrev] = useState("");
+  const [notePdf, setNotePdf] = useState(null); // Initialize as null
   const [btnLoading, setBtnLoading] = useState(false);
   const [notes, setNotes] = useState([]);
   const [fetchingNotes, setFetchingNotes] = useState(false);
@@ -44,65 +50,71 @@ const AdminNotes = ({ user }) => {
     fetchNotes();
   }, []);
 
-  const changeImageHandler = (e) => {
+  // Handle cover image file selection
+  const changeCoverImageHandler = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.readAsDataURL(file);
-
-    reader.onloadend = () => {
-      setImagePrev(reader.result);
-      setImage(file);
-    };
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCoverImagePrev(reader.result);
+        setCoverImage(file);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const changeNoteFileHandler = (e) => {
+  // Handle note PDF file selection
+  const changeNotePdfHandler = (e) => {
     const file = e.target.files[0];
-    setNoteFile(file);
+    if (file) {
+      setNotePdf(file);
+    }
   };
 
+  // Submit form for adding a new note
   const submitHandler = async (e) => {
     e.preventDefault();
     setBtnLoading(true);
 
     const myForm = new FormData();
-
     myForm.append("title", title);
-    
+    myForm.append("author", author);
     myForm.append("description", description);
     myForm.append("price", price);
-    myForm.append("coverImage", image);
-    myForm.append("notePdf", noteFile);
+    myForm.append("coverImage", coverImage);
+    myForm.append("notePdf", notePdf);
 
     try {
       const { data } = await axios.post(`${server}/api/notes/new`, myForm, {
         headers: {
           token: localStorage.getItem("token"),
+          "Content-Type": "multipart/form-data",
         },
       });
 
       toast.success(data.message);
-      setBtnLoading(false);
       fetchNotes(); // Refresh the list of notes
+      // Clear form fields
       setTitle("");
       setAuthor("");
       setDescription("");
       setPrice("");
-      setImage("");
-      setImagePrev("");
-      setNoteFile("");
+      setCoverImage(null);
+      setCoverImagePrev("");
+      setNotePdf(null);
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
       setBtnLoading(false);
     }
   };
 
   return (
     <Layout>
-      <div className="flex flex-col text-gray-100 lg:flex-row min-h-screen p-6 py-20">
+      <div className="flex flex-col bg-gray-100 lg:flex-row min-h-screen p-6 py-20">
         {/* Notes List */}
         <div className="lg:w-2/3 lg:pr-6 mb-6 lg:mb-0">
-          <h1 className="text-3xl font-semibold mb-4 text-blue1">All Notes</h1>
+          <h1 className="text-3xl font-semibold mb-4 text-blue-600">All Notes</h1>
           {fetchingNotes ? (
             <p className="text-gray-800">Loading...</p>
           ) : (
@@ -123,6 +135,7 @@ const AdminNotes = ({ user }) => {
           <div className="bg-gray-400 p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-semibold mb-4 text-gray-900">Add Note</h2>
             <form onSubmit={submitHandler}>
+              {/* Title Input */}
               <div className="mb-4">
                 <label htmlFor="title" className="block text-gray-800">Title</label>
                 <input
@@ -135,8 +148,20 @@ const AdminNotes = ({ user }) => {
                 />
               </div>
 
-             
+              {/* Author Input */}
+              <div className="mb-4">
+                <label htmlFor="author" className="block text-gray-800">Author</label>
+                <input
+                  type="text"
+                  id="author"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  required
+                  className="mt-1 block w-full px-3 py-2 border border-gray-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
 
+              {/* Description Input */}
               <div className="mb-4">
                 <label htmlFor="description" className="block text-gray-800">Description</label>
                 <textarea
@@ -149,6 +174,7 @@ const AdminNotes = ({ user }) => {
                 />
               </div>
 
+              {/* Price Input */}
               <div className="mb-4">
                 <label htmlFor="price" className="block text-gray-800">Price</label>
                 <input
@@ -161,13 +187,14 @@ const AdminNotes = ({ user }) => {
                 />
               </div>
 
+              {/* Cover Image Input */}
               <div className="mb-4">
                 <label htmlFor="coverImage" className="block text-gray-800">Cover Image</label>
                 <input
                   type="file"
-                  id="image"
+                  id="coverImage"
                   required
-                  onChange={changeImageHandler}
+                  onChange={changeCoverImageHandler}
                   className="mt-1 block w-full text-sm text-gray-800
                      file:mr-4 file:py-2 file:px-4
                      file:rounded-md file:border-0
@@ -175,18 +202,19 @@ const AdminNotes = ({ user }) => {
                      file:bg-gray-100 file:text-gray-700
                      hover:file:bg-gray-200"
                 />
-                {imagePrev && (
-                  <img src={imagePrev} alt="Preview" className="mt-2 max-w-full h-auto rounded-md" />
+                {coverImagePrev && (
+                  <img src={coverImagePrev} alt="Preview" className="mt-2 max-w-full h-auto rounded-md" />
                 )}
               </div>
 
+              {/* Note PDF Input */}
               <div className="mb-4">
-                <label htmlFor="notePdf" className="block text-gray-800">Note File</label>
+                <label htmlFor="notePdf" className="block text-gray-800">Note PDF</label>
                 <input
                   type="file"
-                  id="noteFile"
+                  id="notePdf"
                   required
-                  onChange={changeNoteFileHandler}
+                  onChange={changeNotePdfHandler}
                   className="mt-1 block w-full text-sm text-gray-800
                      file:mr-4 file:py-2 file:px-4
                      file:rounded-md file:border-0
@@ -196,10 +224,11 @@ const AdminNotes = ({ user }) => {
                 />
               </div>
 
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={btnLoading}
-                className="w-full px-4 py-2 bg-blue1 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out"
+                className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out"
               >
                 {btnLoading ? "Please Wait..." : "Add Note"}
               </button>

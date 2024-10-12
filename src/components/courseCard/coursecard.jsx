@@ -28,9 +28,19 @@ const CourseCard = ({ course }) => {
     }
   };
 
+  // Function to extract the thumbnail from the youtubeLink
+  const getThumbnailFromYoutube = (youtubeLink) => {
+    const videoId = youtubeLink.split('v=')[1]?.split('&')[0] || youtubeLink.split('/').pop();
+    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  };
+
   return (
     <div className="bg-gray-300 text-black rounded-lg shadow-xl overflow-hidden transform transition-transform hover:scale-105 hover:shadow-2xl duration-300 ease-in-out">
-      <img src={`${server}/${course.image}`} alt={course.title} className="w-full h-48 object-cover" />
+      <img 
+        src={getThumbnailFromYoutube(course.youtubeLink)} 
+        alt={course.title} 
+        className="w-full h-48 object-cover" 
+      />
       <div className="p-6">
         <h3 className="text-2xl text-blue1 font-semibold mb-2">{course.title}</h3>
         <p className="text-gray-900 mb-2">Instructor: {course.createdBy}</p>

@@ -1,10 +1,10 @@
 import React from "react";
-import { server } from "../main";
-import { UserData } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { UserData } from "../context/userContext";
 import { EbookData } from "../context/ebookContext";
+import { server } from "../main";  // Assuming this contains the server URL
 
 const EbookCard = ({ ebook }) => {
   const navigate = useNavigate();
@@ -28,12 +28,14 @@ const EbookCard = ({ ebook }) => {
     }
   };
 
+  // Check if the user has purchased the ebook
   const hasPurchased = user?.purchasedEbooks?.includes(ebook._id);
 
   return (
     <div className="bg-gray-300 text-blue1 rounded-lg shadow-xl overflow-hidden transform transition-transform hover:scale-105 hover:shadow-2xl duration-300 ease-in-out max-w-xs sm:max-w-sm lg:max-w-md h-full flex flex-col">
+      {/* Use the Cloudinary URL (assuming ebook.coverImage contains the Cloudinary URL) */}
       <img
-        src={`${server}/${ebook.coverImage}`}
+        src={ebook.coverImage}  // Directly using the Cloudinary image URL stored in the database
         alt={ebook.title}
         className="w-full h-48 object-cover transition-transform duration-500 ease-in-out hover:scale-110"
       />

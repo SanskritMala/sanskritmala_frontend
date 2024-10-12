@@ -23,29 +23,33 @@ const EbookRead = () => {
   useEffect(() => {
     const fetchEbook = async () => {
       try {
+        // Check if the user is authenticated
         if (!isAuth) {
           toast.error("You need to be logged in to view this eBook.");
           navigate("/login");
           return;
         }
 
+        // Check if the user has purchased the eBook
         const hasPurchased = user?.purchasedEbooks?.includes(id);
-
         if (!hasPurchased) {
           toast.error("You have not purchased this eBook.");
           navigate("/");
           return;
         }
 
+        // Fetch the eBook PDF from the server
         const { data } = await axios.get(`${server}/api/ebooks/${id}/pdf`, {
           headers: {
             token: localStorage.getItem("token"),
           },
         });
 
-        setPdfUrl(`${server}/${data.pdfPath}`);
+        // Set the PDF URL from the response data
+        setPdfUrl(data.pdfPath); // This should be the Cloudinary URL returned from your backend
         setLoading(false);
       } catch (error) {
+        console.error("Error fetching the eBook:", error);
         toast.error("Failed to fetch the eBook.");
         navigate("/");
       }
@@ -82,7 +86,6 @@ const EbookRead = () => {
             <Viewer 
               fileUrl={pdfUrl} 
               plugins={[defaultLayoutPluginInstance]} 
-              // Use CSS to hide the default controls
             />
           </Worker>
           <div className="absolute top-4 right-4 z-10">

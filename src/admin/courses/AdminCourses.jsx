@@ -26,21 +26,8 @@ const AdminCourses = ({ user }) => {
   const [price, setPrice] = useState("");
   const [createdBy, setCreatedBy] = useState("");
   const [duration, setDuration] = useState("");
-  const [image, setImage] = useState("");
-  const [imagePrev, setImagePrev] = useState("");
+  const [youtubeLink, setYoutubeLink] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
-
-  const changeImageHandler = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.readAsDataURL(file);
-
-    reader.onloadend = () => {
-      setImagePrev(reader.result);
-      setImage(file);
-    };
-  };
 
   const { courses, fetchCourses } = CourseData();
 
@@ -48,15 +35,15 @@ const AdminCourses = ({ user }) => {
     e.preventDefault();
     setBtnLoading(true);
 
-    const myForm = new FormData();
-
-    myForm.append("title", title);
-    myForm.append("description", description);
-    myForm.append("category", category);
-    myForm.append("price", price);
-    myForm.append("createdBy", createdBy);
-    myForm.append("duration", duration);
-    myForm.append("file", image);
+    const myForm = {
+      title,
+      description,
+      category,
+      price,
+      createdBy,
+      duration,
+      youtubeLink,
+    };
 
     try {
       const { data } = await axios.post(`${server}/api/course/new`, myForm, {
@@ -68,22 +55,22 @@ const AdminCourses = ({ user }) => {
       toast.success(data.message);
       setBtnLoading(false);
       await fetchCourses();
-      setImage("");
       setTitle("");
       setDescription("");
       setDuration("");
-      setImagePrev("");
+      setYoutubeLink("");
       setCreatedBy("");
       setPrice("");
       setCategory("");
     } catch (error) {
       toast.error(error.response.data.message);
+      setBtnLoading(false);
     }
   };
 
   return (
     <Layout>
-      <div className="flex flex-col bg-gray-100 lg:flex-row  min-h-screen p-6 py-20">
+      <div className="flex flex-col bg-gray-100 lg:flex-row min-h-screen p-6 py-20">
         {/* Courses List */}
         <div className="lg:w-2/3 lg:pr-6 mb-6 lg:mb-0">
           <h1 className="text-3xl font-semibold mb-4 text-blue1">All Courses</h1>
@@ -157,6 +144,7 @@ const AdminCourses = ({ user }) => {
                   id="category"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
+                  required
                   className="mt-1 block w-full px-3 py-2 border border-gray-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">Select Category</option>
@@ -169,7 +157,7 @@ const AdminCourses = ({ user }) => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="duration" className="block text-gray-800">Duration</label>
+                <label htmlFor="duration" className="block text-gray-800">Duration (hours)</label>
                 <input
                   type="number"
                   id="duration"
@@ -181,22 +169,15 @@ const AdminCourses = ({ user }) => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="image" className="block text-gray-800">Image</label>
+                <label htmlFor="youtubeLink" className="block text-gray-800">YouTube Link</label>
                 <input
-                  type="file"
-                  id="image"
+                  type="url"
+                  id="youtubeLink"
+                  value={youtubeLink}
+                  onChange={(e) => setYoutubeLink(e.target.value)}
                   required
-                  onChange={changeImageHandler}
-                  className="mt-1 block w-full text-sm text-gray-800
-                     file:mr-4 file:py-2 file:px-4
-                     file:rounded-md file:border-0
-                     file:text-sm file:font-semibold
-                     file:bg-gray-100 file:text-gray-700
-                     hover:file:bg-gray-200"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
-                {imagePrev && (
-                  <img src={imagePrev} alt="Preview" className="mt-2 max-w-full h-auto rounded-md" />
-                )}
               </div>
 
               <button
@@ -204,7 +185,7 @@ const AdminCourses = ({ user }) => {
                 disabled={btnLoading}
                 className="w-full px-4 py-2 bg-blue1 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out"
               >
-                {btnLoading ? "Please Wait..." : "Add"}
+                {btnLoading ? "Please Wait..." : "Add Course"}
               </button>
             </form>
           </div>

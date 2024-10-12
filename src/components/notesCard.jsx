@@ -23,7 +23,7 @@ const NotesCard = ({ note }) => {
         toast.success(data.message);
         fetchNotes();
       } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error.response?.data?.message || "Error deleting note.");
       }
     }
   };
@@ -33,7 +33,7 @@ const NotesCard = ({ note }) => {
   return (
     <div className="bg-gray-300 text-blue1 rounded-lg shadow-xl overflow-hidden transform transition-transform hover:scale-105 hover:shadow-2xl duration-300 ease-in-out max-w-xs sm:max-w-sm lg:max-w-md h-full flex flex-col">
       <img
-        src={`${server}/${note.coverImage}`}
+        src={note.coverImage} // Use the Cloudinary URL directly
         alt={note.title}
         className="w-full h-48 object-cover transition-transform duration-500 ease-in-out hover:scale-110"
       />

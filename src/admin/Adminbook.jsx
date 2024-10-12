@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { server } from "../main";
-import BookCard from "../components/bookcard"; // Import BookCard component
+import BookCard from "../components/bookcard";
 
 const categories = [
   "Fiction",
@@ -25,7 +25,7 @@ const AdminBooks = ({ user }) => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null); // Change initial state to null
   const [imagePrev, setImagePrev] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
   const [books, setBooks] = useState([]);
@@ -60,7 +60,7 @@ const AdminBooks = ({ user }) => {
 
     reader.onloadend = () => {
       setImagePrev(reader.result);
-      setImage(file);
+      setImage(file); // Set the image file
     };
   };
 
@@ -69,34 +69,35 @@ const AdminBooks = ({ user }) => {
     setBtnLoading(true);
 
     const myForm = new FormData();
-
     myForm.append("title", title);
     myForm.append("author", author);
     myForm.append("description", description);
     myForm.append("price", price);
     myForm.append("category", category);
-    myForm.append("file", image);
+    myForm.append("coverImage", image); // Ensure this matches backend expectation
 
     try {
       const { data } = await axios.post(`${server}/api/book/new`, myForm, {
         headers: {
           token: localStorage.getItem("token"),
+          "Content-Type": "multipart/form-data", // Ensure proper content type
         },
       });
 
       toast.success(data.message);
-      setBtnLoading(false);
       fetchBooks(); // Refresh the list of books
+      // Reset form fields
       setTitle("");
       setAuthor("");
       setDescription("");
       setPrice("");
       setCategory("");
-      setImage("");
+      setImage(null); // Reset image to null
       setImagePrev("");
     } catch (error) {
       toast.error(error.response.data.message);
-      setBtnLoading(false);
+    } finally {
+      setBtnLoading(false); // Ensure loading state is reset
     }
   };
 
@@ -112,7 +113,7 @@ const AdminBooks = ({ user }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {books.length > 0 ? (
                 books.map((book) => (
-                  <BookCard key={book._id} book={book} /> // Use BookCard component
+                  <BookCard key={book._id} book={book} />
                 ))
               ) : (
                 <p className="text-gray-800">No Books Yet</p>
@@ -126,6 +127,7 @@ const AdminBooks = ({ user }) => {
           <div className="bg-gray-400 p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-semibold mb-4 text-gray-900">Add Book</h2>
             <form onSubmit={submitHandler}>
+              {/* Title Input */}
               <div className="mb-4">
                 <label htmlFor="title" className="block text-gray-800">Title</label>
                 <input
@@ -138,6 +140,7 @@ const AdminBooks = ({ user }) => {
                 />
               </div>
 
+              {/* Author Input */}
               <div className="mb-4">
                 <label htmlFor="author" className="block text-gray-800">Author</label>
                 <input
@@ -150,6 +153,7 @@ const AdminBooks = ({ user }) => {
                 />
               </div>
 
+              {/* Description Input */}
               <div className="mb-4">
                 <label htmlFor="description" className="block text-gray-800">Description</label>
                 <textarea
@@ -162,6 +166,7 @@ const AdminBooks = ({ user }) => {
                 />
               </div>
 
+              {/* Price Input */}
               <div className="mb-4">
                 <label htmlFor="price" className="block text-gray-800">Price</label>
                 <input
@@ -174,6 +179,7 @@ const AdminBooks = ({ user }) => {
                 />
               </div>
 
+              {/* Category Selection */}
               <div className="mb-4">
                 <label htmlFor="category" className="block text-gray-800">Category</label>
                 <select
@@ -191,13 +197,15 @@ const AdminBooks = ({ user }) => {
                 </select>
               </div>
 
+              {/* Cover Image Input */}
               <div className="mb-4">
-                <label htmlFor="image" className="block text-gray-800">Image</label>
+                <label htmlFor="image" className="block text-gray-800">Cover Image</label>
                 <input
                   type="file"
                   id="image"
                   required
                   onChange={changeImageHandler}
+                  accept="image/*" // Add accept attribute to restrict file types
                   className="mt-1 block w-full text-sm text-gray-800
                      file:mr-4 file:py-2 file:px-4
                      file:rounded-md file:border-0
@@ -210,6 +218,7 @@ const AdminBooks = ({ user }) => {
                 )}
               </div>
 
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={btnLoading}

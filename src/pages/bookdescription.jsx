@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BookData } from "../context/bookContext";
-import { server } from "../main";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { UserData } from "../context/userContext";
 import Loading from "../components/loading/loading";
+import { server } from "../main";
 
 const BookDescription = () => {
   const params = useParams();
@@ -17,82 +17,95 @@ const BookDescription = () => {
   const { fetchBook, book, fetchBooks } = BookData();
   const { fetchUser, user } = UserData();
 
-  useEffect(() => {
-    fetchBook(params.id);
-  }, [params.id]);
+  // Load the Cashfree SDK script
+ // Load the Cashfree SDK script
+ useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+        script.async = true;
+        document.body.appendChild(script);
 
-  const handleAddressChange = (e) => {
-    setAddress(e.target.value);
-  };
+        fetchBook(params.id); // Ensure fetchBook is defined
 
-  const handleAddressSubmit = async () => {
-    if (!address) {
-      toast.error("Please enter your address.");
-      return;
-    }
-    setLoading(true);
+        return () => {
+            document.body.removeChild(script); // Cleanup script on component unmount
+        };
+    }, [params.id]); // Removed fetchBook from dependency array
 
-    try {
-      // Initiate checkout with address
-      const {
-        data: { order },
-      } = await axios.post(
-        `${server}/api/book/checkout/${params.id}`,
-        { address },
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        }
-      );
+    const handleAddressChange = (e) => {
+        setAddress(e.target.value);
+    };
 
-      const options = {
-        key: "rzp_test_O08KSxJATKVPW6", // Your Razorpay Key ID
-        amount: order.amount, // Ensure amount is in paise (₹100 = 10000)
-        currency: "INR",
-        name: "SanskritMala",
-        description: "Purchase Book",
-        order_id: order.id,
-        handler: async function (response) {
-          const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = response;
-
-          try {
-            // Verify payment
-            const { data } = await axios.post(
-              `${server}/api/bookverification/${params.id}`,
-              {
-                order_id: razorpay_order_id,
-                payment_id: razorpay_payment_id,
-                razorpay_signature,
-              },
-              {
-                headers: {
-                  token: localStorage.getItem("token"),
-                },
-              }
-            );
-
-            await fetchUser(); // Refresh user data
-            await fetchBooks(); // Refresh books data
-            toast.success(data.message);
-            setLoading(false);
-            navigate(`/book-payment-success/${razorpay_payment_id}`);
-          } catch (error) {
-            toast.error(error.response.data.message);
-            setLoading(false);
+    const handleAddressSubmit = async () => {
+      if (!address) {
+        toast.error("Please enter your address.");
+        return;
+      }
+      setLoading(true);
+  
+      try {
+        // Initiate checkout with address
+        const {
+          data: { order },
+        } = await axios.post(
+          `${server}/api/book/checkout/${params.id}`,
+          { address },
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
           }
-        },
-        theme: {
-          color: "#8a4baf",
-        },
-      };
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } catch (error) {
-      toast.error("Failed to initiate payment");
-      setLoading(false);
-    }
-  };
+        );
+  
+        const options = {
+          key: "rzp_test_O08KSxJATKVPW6", // Your Razorpay Key ID
+          amount: order.amount, // Ensure amount is in paise (₹100 = 10000)
+          currency: "INR",
+          name: "SanskritMala",
+          description: "Purchase Book",
+          order_id: order.id,
+          handler: async function (response) {
+            const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = response;
+  
+            try {
+              // Verify payment
+              const { data } = await axios.post(
+                `${server}/api/bookverification/${params.id}`,
+                {
+                  order_id: razorpay_order_id,
+                  payment_id: razorpay_payment_id,
+                  razorpay_signature,
+                },
+                {
+                  headers: {
+                    token: localStorage.getItem("token"),
+                  },
+                }
+              );
+  
+              await fetchUser(); // Refresh user data
+              await fetchBooks(); // Refresh books data
+              toast.success(data.message);
+              setLoading(false);
+              navigate(`/book-payment-success/${razorpay_payment_id}`);
+            } catch (error) {
+              toast.error(error.response.data.message);
+              setLoading(false);
+            }
+          },
+          theme: {
+            color: "#8a4baf",
+          },
+        };
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+      } catch (error) {
+        toast.error("Failed to initiate payment");
+        setLoading(false);
+      }
+    };
+
+  
 
   return (
     <>
@@ -105,7 +118,7 @@ const BookDescription = () => {
               <div className="bg-gray-300 text-blue1 rounded-lg shadow-lg overflow-hidden w-full max-w-4xl mx-auto transition-transform transform hover:scale-105 duration-300 ease-in-out">
                 <div className="flex flex-col lg:flex-row">
                   <img
-                    src={`${server}/${book.image}`}
+                    src={book.coverImage}
                     alt={book.title}
                     className="w-full lg:w-1/2 h-64 lg:h-80 object-cover rounded-lg shadow-md"
                   />

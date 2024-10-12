@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaCaretDown, FaBars, FaTimes } from 'react-icons/fa';
 import './header.css'; // Ensure this imports the correct CSS file
-import logo from '../../assets/logo.png'; // Adjust the path as necessary
+import logo from '../../assets/sanskritmala.jpg'; // Adjust the path as necessary
 
 const Header = ({ isAuth }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,8 +39,9 @@ const Header = ({ isAuth }) => {
 
   return (
     <header className={scrolled ? 'scrolled' : ''}>
-      <Link to={'/'} className='logo'>
+      <Link to={'/'} className='logo flex'>
         <img src={logo} alt="SanskritMala Logo" className="logo-img" />
+       
       </Link>
       <div className='hamburger' onClick={toggleMenu}>
         {menuOpen ? <FaTimes /> : <FaBars />}

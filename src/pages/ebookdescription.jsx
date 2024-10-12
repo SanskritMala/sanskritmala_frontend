@@ -92,7 +92,7 @@ const EbookDescription = () => {
               <div className="bg-gray-300 text-blue1 rounded-lg shadow-xl overflow-hidden w-full max-w-3xl mx-auto transition-transform transform hover:scale-105 duration-300 ease-in-out">
                 <div className="flex flex-col lg:flex-row">
                   <img
-                    src={`${server}/${ebook.coverImage}`}
+                    src={ebook.coverImage} // Use the full Cloudinary URL
                     alt={ebook.title}
                     className="w-full lg:w-1/2 h-64 lg:h-80 object-cover rounded-lg shadow-md"
                   />

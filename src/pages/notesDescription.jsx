@@ -13,11 +13,12 @@ const NotesDescription = () => {
   const [loading, setLoading] = useState(false);
 
   const { fetchNote, note } = NotesData();
-  const { fetchUser, user } = UserData();
+  const { fetchUser } = UserData();
 
   useEffect(() => {
     fetchNote(params.id);
   }, [params.id]);
+
 
   const handlePurchase = async () => {
     setLoading(true);
@@ -91,8 +92,9 @@ const NotesDescription = () => {
             <div className="container mx-auto px-4 py-28 lg:py-40">
               <div className="bg-gray-300 text-blue1 rounded-lg shadow-xl overflow-hidden w-full max-w-4xl mx-auto transition-transform transform hover:scale-105 duration-300 ease-in-out">
                 <div className="flex flex-col lg:flex-row">
+                  {/* Display cover image from Cloudinary */}
                   <img
-                    src={`${server}/${note.coverImage}`}
+                    src={note.coverImage} // Directly use Cloudinary URL
                     alt={note.title}
                     className="w-full lg:w-1/2 h-64 lg:h-80 object-cover rounded-lg shadow-md"
                   />

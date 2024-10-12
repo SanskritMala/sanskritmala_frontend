@@ -31,7 +31,7 @@ const BookCard = ({ book }) => {
   return (
     <div className="bg-gray-300 text-blue1 rounded-lg shadow-xl overflow-hidden transform transition-transform hover:scale-105 hover:shadow-2xl duration-300 ease-in-out max-w-xs sm:max-w-sm lg:max-w-md h-full flex flex-col">
       <img
-        src={`${server}/${book.image}`}
+        src={book.coverImage} // Use Cloudinary URL for the image
         alt={book.title}
         className="w-full h-48 object-cover transition-transform duration-500 ease-in-out hover:scale-110"
       />

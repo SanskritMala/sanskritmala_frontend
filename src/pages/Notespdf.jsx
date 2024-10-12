@@ -43,7 +43,8 @@ const NotesRead = () => {
           },
         });
 
-        setPdfUrl(`${server}/${data.pdfPath}`);
+        // Assuming the response contains the full Cloudinary URL for the PDF
+        setPdfUrl(data.pdfPath); // Use pdfPath directly without prepending the server URL
         setLoading(false);
       } catch (error) {
         toast.error("Failed to fetch the note.");
@@ -80,9 +81,8 @@ const NotesRead = () => {
         >
           <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
             <Viewer 
-              fileUrl={pdfUrl} 
+              fileUrl={pdfUrl} // Use Cloudinary PDF URL here directly
               plugins={[defaultLayoutPluginInstance]} 
-              // Use CSS to hide the default controls
             />
           </Worker>
           <div className="absolute top-4 right-4 z-10">
