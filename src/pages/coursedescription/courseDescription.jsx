@@ -51,7 +51,7 @@ const CourseDescription = ({ user }) => {
         console.log("Order Data:", order); // Debugging log
 
         const options = {
-            key: "rzp_test_O08KSxJATKVPW6",
+            key: "rzp_live_YKAs7EQjRlk8Kt",
             amount: order.amount, // Make sure this is in paise
             currency: "INR",
             name: "SanskritMala",

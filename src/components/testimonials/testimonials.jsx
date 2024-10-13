@@ -4,32 +4,33 @@ const Testimonials = () => {
   const testimonialsData = [
     {
       id: 1,
-      name: "John Doe",
+      name: "Amit Sharma",
       position: "Student",
       message:
-        "This platform helped me learn so effectively. The courses are amazing and the instructors are top-notch.",
+        "The Sanskrit courses offered here are comprehensive and easy to follow. I've gained a deeper understanding of the language, and the study materials are excellent.",
       image:
         "https://th.bing.com/th?q=Current+Bachelor&w=120&h=120&c=1&rs=1&qlt=90&cb=1&dpr=1.3&pid=InlineBlock&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247",
     },
     {
       id: 2,
-      name: "Jane Smith",
+      name: "Priya Desai",
       position: "Student",
       message:
-        "I've learned more here than in any other place. The interactive lessons and quizzes make learning enjoyable.",
+        "The study notes and books have been extremely helpful in my Sanskrit studies. The platform is well-organized and provides great learning resources.",
       image:
-        "https://th.bing.com/th/id/OIP.GKAiW3oc2TWXVEeZAzrWOAHaJF?w=135&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+        "https://res.cloudinary.com/drcmiptb8/image/upload/v1728808748/bxvqod8rivftoivj90ii.jpg",
     },
     {
       id: 3,
-      name: "John Doe",
-      position: "Student",
+      name: "Rahul Gupta",
+      position: "Researcher",
       message:
-        "This platform helped me learn so effectively. The courses are amazing and the instructors are top-notch.",
+        "I have been using the Sanskrit books and notes for my research, and they have been invaluable. The detailed explanations and structured content make learning much easier.",
       image:
-        "https://th.bing.com/th?q=Current+Bachelor&w=120&h=120&c=1&rs=1&qlt=90&cb=1&dpr=1.3&pid=InlineBlock&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247",
+        "https://res.cloudinary.com/drcmiptb8/image/upload/v1728808880/iohaf96cul3wwbcpplvs.jpg",
     },
   ];
+  
 
   return (
     <section className="bg-gray-100 text-black py-12 px-4 md:px-8">

@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
-import { FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaWhatsapp, FaFacebook, FaInstagram, FaTelegram } from "react-icons/fa";
+
 
 const Footer = () => {
   return (
@@ -10,7 +10,7 @@ const Footer = () => {
         {/* Contact Us Section */}
         <div>
           <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-          <p>Email: sales@sanskritmala.com</p>
+          <p>Email: sanskritmala01@gmail.com</p>
           <p>Phone:+918396068147,+917323908890</p>
         </div>
 
@@ -24,9 +24,7 @@ const Footer = () => {
             <li className="mb-2">
               <Link to="/courses" className="hover:text-blue1">Courses</Link>
             </li>
-            <li className="mb-2">
-              <Link to="/privacy" className="hover:text-blue1">Privacy</Link>
-            </li>
+           
           </ul>
         </div>
 
@@ -34,17 +32,17 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
           <div className="flex space-x-4">
-            <a href="https://x.com/ScholarRankAI" target="_blank" rel="noopener noreferrer" className="text-gray-100 hover:text-blue1">
-              <FaXTwitter size={24} />
+            <a href="https://www.whatsapp.com/channel/0029Va64wQKJpe8j9Ewb8z37" target="_blank" rel="noopener noreferrer" className="text-gray-100 hover:text-blue1">
+              <FaWhatsapp  size={24} />
             </a>
-            <a href="https://www.facebook.com/Scholarrank/" target="_blank" rel="noopener noreferrer" className="text-gray-100 hover:text-blue1">
+            <a href="https://www.facebook.com/sanskritmalas?mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer" className="text-gray-100 hover:text-blue1">
               <FaFacebook size={24} />
             </a>
-            <a href="https://www.instagram.com/scholarrank/" target="_blank" rel="noopener noreferrer" className="text-gray-100 hover:text-blue1">
+            <a href="https://www.instagram.com/sanskrit_mala/" target="_blank" rel="noopener noreferrer" className="text-gray-100 hover:text-blue1">
               <FaInstagram size={24} />
             </a>
-            <a href="https://www.linkedin.com/company/scholarrank/about/" target="_blank" rel="noopener noreferrer" className="text-gray-100 hover:text-blue1">
-              <FaLinkedin size={24} />
+            <a href="https://t.me/+IfUCxE5n3kA2YzI1" target="_blank" rel="noopener noreferrer" className="text-gray-100 hover:text-blue1">
+              <FaTelegram size={24} />
             </a>
           </div>
         </div>

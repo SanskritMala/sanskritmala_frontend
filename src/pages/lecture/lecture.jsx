@@ -151,7 +151,7 @@ const Lecture = ({ user }) => {
   // Function to get YouTube embed URL
   const getEmbedUrl = (url) => {
     const videoId = new URL(url).searchParams.get("v"); // Safely get video ID
-    return `https://www.youtube.com/embed/${videoId}`;
+    return `https://www.youtube.com/embed/${videoId}?controls=1&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3`;
   };
 
   useEffect(() => {
@@ -190,6 +190,7 @@ const Lecture = ({ user }) => {
                       allowFullScreen
                       title={lecture.title}
                     ></iframe>
+                    
                   ) : (
                     <h1 className="text-2xl lg:text-3xl font-bold">Please Select a Lecture</h1>
                   )}

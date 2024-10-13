@@ -36,7 +36,7 @@ const NotesDescription = () => {
       );
 
       const options = {
-        key: "rzp_test_O08KSxJATKVPW6", // Your Razorpay Key ID
+        key: "rzp_live_YKAs7EQjRlk8Kt", // Your Razorpay Key ID
         amount: order.amount, // Ensure amount is in paise (₹100 = 10000)
         currency: "INR",
         name: "SanskritMala",

@@ -12,7 +12,7 @@ const services = [
   { title: 'E-Books', description: 'Download and read e-books.', icon: '📖', link: '/ebooks', details: 'Discover a vast collection of e-books to read and download at your convenience.', image: ebook },
   { title: 'Test Series', description: 'Prepare with our test series.', icon: '📝', link: '/test-series', details: 'Practice and assess your knowledge with our comprehensive test series.', image: test },
   { title: 'Notes', description: 'Access free and paid notes.', icon: '🗒️', link: '/notes', details: 'Get access to both free and premium notes for thorough learning.', image: notes },
-  { title: 'YouTube', description: 'Connect with us on YouTube.', icon: '📺', link: '/youtube', details: 'Watch our educational videos and tutorials on our YouTube channel.', image: youtube },
+  { title: 'YouTube', description: 'Connect with us on YouTube.', icon: '📺', link: 'https://www.youtube.com/@SANSKRITMALA', details: 'Watch our educational videos and tutorials on our YouTube channel.', image: youtube },
   { title: 'Book Store', description: 'Explore our Book Store.', icon: '📚', link: '/book-store', details: 'Purchase a variety of Sanskrit books from our online store.', image: books },
 ];
 

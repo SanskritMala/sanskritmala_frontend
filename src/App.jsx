@@ -42,6 +42,7 @@ import NotesPaymentSuccess from './pages/paymentSuccess/notespayment'
 import NotesRead from './pages/Notespdf'
 import AdminNotes from './admin/Adminnotes'
 import UpdateNote from './admin/modifyNotes'
+import ErrorPage from './pages/error'
 const App = () => {
   const { isAuth, user, loading } = UserData()
   return <>
@@ -124,6 +125,7 @@ const App = () => {
 
 } />
             <Route path="/notes/modify/:id" element={<UpdateNote />} />
+            <Route path="*" element={<ErrorPage/>} />
 
 
       </Routes>
