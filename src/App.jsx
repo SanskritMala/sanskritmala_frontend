@@ -46,7 +46,7 @@ import ErrorPage from './pages/error'
 const App = () => {
   const { isAuth, user, loading } = UserData()
   return <>
-    {loading ? <Loading /> : <BrowserRouter>
+     <BrowserRouter>
       <Header isAuth={isAuth} />
       <Routes>
         <Route path='/' element={<Home />}></Route>
@@ -130,7 +130,7 @@ const App = () => {
 
       </Routes>
       <Footer />
-    </BrowserRouter>}
+    </BrowserRouter>
   </>
 
 }
