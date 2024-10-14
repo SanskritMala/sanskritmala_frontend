@@ -32,10 +32,11 @@ const NotesCard = ({ note }) => {
 
   return (
     <div className="bg-gray-300 text-blue1 rounded-lg shadow-xl overflow-hidden transform transition-transform hover:scale-105 hover:shadow-2xl duration-300 ease-in-out max-w-xs sm:max-w-sm lg:max-w-md h-full flex flex-col">
+      {/* Display the cover image with object-contain to fit within the height */}
       <img
         src={note.coverImage} // Use the Cloudinary URL directly
         alt={note.title}
-        className="w-full h-48 object-cover transition-transform duration-500 ease-in-out hover:scale-110"
+        className="w-full bg-white h-48 object-contain transition-transform duration-500 ease-in-out hover:scale-110" // Use object-contain for full image visibility
       />
       <div className="p-6 flex-1 flex flex-col">
         <h3 className="text-2xl font-semibold mb-2">{note.title}</h3>

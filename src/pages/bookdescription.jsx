@@ -18,94 +18,89 @@ const BookDescription = () => {
   const { fetchUser, user } = UserData();
 
   // Load the Cashfree SDK script
- // Load the Cashfree SDK script
- useEffect(() => {
-        const script = document.createElement("script");
-        script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
-        script.async = true;
-        document.body.appendChild(script);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+    script.async = true;
+    document.body.appendChild(script);
 
-        fetchBook(params.id); // Ensure fetchBook is defined
+    fetchBook(params.id);
 
-        return () => {
-            document.body.removeChild(script); // Cleanup script on component unmount
-        };
-    }, [params.id]); // Removed fetchBook from dependency array
-
-    const handleAddressChange = (e) => {
-        setAddress(e.target.value);
+    return () => {
+      document.body.removeChild(script); // Cleanup script on component unmount
     };
+  }, [params.id]);
 
-    const handleAddressSubmit = async () => {
-      if (!address) {
-        toast.error("Please enter your address.");
-        return;
-      }
-      setLoading(true);
-  
-      try {
-        // Initiate checkout with address
-        const {
-          data: { order },
-        } = await axios.post(
-          `${server}/api/book/checkout/${params.id}`,
-          { address },
-          {
-            headers: {
-              token: localStorage.getItem("token"),
-            },
-          }
-        );
-  
-        const options = {
-          key: "rzp_live_YKAs7EQjRlk8Kt", // Your Razorpay Key ID
-          amount: order.amount, // Ensure amount is in paise (₹100 = 10000)
-          currency: "INR",
-          name: "SanskritMala",
-          description: "Purchase Book",
-          order_id: order.id,
-          handler: async function (response) {
-            const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = response;
-  
-            try {
-              // Verify payment
-              const { data } = await axios.post(
-                `${server}/api/bookverification/${params.id}`,
-                {
-                  order_id: razorpay_order_id,
-                  payment_id: razorpay_payment_id,
-                  razorpay_signature,
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
+  };
+
+  const handleAddressSubmit = async () => {
+    if (!address) {
+      toast.error("Please enter your address.");
+      return;
+    }
+    setLoading(true);
+
+    try {
+      const {
+        data: { order },
+      } = await axios.post(
+        `${server}/api/book/checkout/${params.id}`,
+        { address },
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      const options = {
+        key: "rzp_live_YKAs7EQjRlk8Kt", // Your Razorpay Key ID
+        amount: order.amount, // Ensure amount is in paise (₹100 = 10000)
+        currency: "INR",
+        name: "SanskritMala",
+        description: "Purchase Book",
+        order_id: order.id,
+        handler: async function (response) {
+          const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = response;
+
+          try {
+            const { data } = await axios.post(
+              `${server}/api/bookverification/${params.id}`,
+              {
+                order_id: razorpay_order_id,
+                payment_id: razorpay_payment_id,
+                razorpay_signature,
+              },
+              {
+                headers: {
+                  token: localStorage.getItem("token"),
                 },
-                {
-                  headers: {
-                    token: localStorage.getItem("token"),
-                  },
-                }
-              );
-  
-              await fetchUser(); // Refresh user data
-              await fetchBooks(); // Refresh books data
-              toast.success(data.message);
-              setLoading(false);
-              navigate(`/book-payment-success/${razorpay_payment_id}`);
-            } catch (error) {
-              toast.error(error.response.data.message);
-              setLoading(false);
-            }
-          },
-          theme: {
-            color: "#8a4baf",
-          },
-        };
-        const razorpay = new window.Razorpay(options);
-        razorpay.open();
-      } catch (error) {
-        toast.error("Failed to initiate payment");
-        setLoading(false);
-      }
-    };
+              }
+            );
 
-  
+            await fetchUser(); // Refresh user data
+            await fetchBooks(); // Refresh books data
+            toast.success(data.message);
+            setLoading(false);
+            navigate(`/book-payment-success/${razorpay_payment_id}`);
+          } catch (error) {
+            toast.error(error.response.data.message);
+            setLoading(false);
+          }
+        },
+        theme: {
+          color: "#8a4baf",
+        },
+      };
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      toast.error("Failed to initiate payment");
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -114,19 +109,23 @@ const BookDescription = () => {
       ) : (
         <>
           {book && (
-            <div className="container mx-auto px-4 py-28 sm:py-20 lg:py-40 ">
+            <div className="container mx-auto px-4 py-28 sm:py-20 lg:py-40">
               <div className="bg-gray-300 text-blue1 rounded-lg shadow-lg overflow-hidden w-full max-w-4xl mx-auto transition-transform transform hover:scale-105 duration-300 ease-in-out">
                 <div className="flex flex-col lg:flex-row">
                   <img
                     src={book.coverImage}
                     alt={book.title}
-                    className="w-full lg:w-1/2 h-64 lg:h-80 object-cover rounded-lg shadow-md"
+                    className="w-full lg:w-1/2 bg-gray-200 h-auto lg:h-80 object-contain rounded-lg shadow-md" // Ensure full image is visible
                   />
-                  <div className="lg:ml-6 flex-1 p-4 sm:p-6 lg:p-8">
-                    <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-blue1">{book.title}</h2>
-                    <p className="text-base sm:text-lg mb-2 text-gray-900">Author: <span className="font-semibold">{book.author}</span></p>
-                    <p className="text-base sm:text-lg mb-4 text-gray-900">{book.description}</p>
-                    <p className="text-lg sm:text-xl font-semibold mb-6 text-blue1">Price: ₹{book.price}</p>
+                  <div className="lg:ml-6 flex-1 p-4 sm:p-6 lg:p-8 flex flex-col justify-between">
+                    <div>
+                      <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-blue1">{book.title}</h2>
+                      <p className="text-base sm:text-lg mb-2 text-gray-900">
+                        Author: <span className="font-semibold">{book.author}</span>
+                      </p>
+                      <p className="text-base sm:text-lg mb-4 text-gray-900">{book.description}</p>
+                      <p className="text-lg sm:text-xl font-semibold mb-6 text-blue1">Price: ₹{book.price}</p>
+                    </div>
 
                     {showAddressForm ? (
                       <>

@@ -19,7 +19,6 @@ const NotesDescription = () => {
     fetchNote(params.id);
   }, [params.id]);
 
-
   const handlePurchase = async () => {
     setLoading(true);
 
@@ -91,14 +90,14 @@ const NotesDescription = () => {
           {note && (
             <div className="container mx-auto px-4 py-28 lg:py-40">
               <div className="bg-gray-300 text-blue1 rounded-lg shadow-xl overflow-hidden w-full max-w-4xl mx-auto transition-transform transform hover:scale-105 duration-300 ease-in-out">
-                <div className="flex flex-col lg:flex-row">
+                <div className="flex flex-row">
                   {/* Display cover image from Cloudinary */}
                   <img
                     src={note.coverImage} // Directly use Cloudinary URL
                     alt={note.title}
-                    className="w-full lg:w-1/2 h-64 lg:h-80 object-cover rounded-lg shadow-md"
+                    className="w-1/2 bg-gray-200 h-72 object-contain" // Set fixed height to control the display
                   />
-                  <div className="lg:ml-6 flex-1 p-6">
+                  <div className="flex-1 p-6">
                     <h2 className="text-4xl font-bold mb-4 text-indigo-400">{note.title}</h2>
                     <p className="text-lg mb-4 text-gray-900">{note.description}</p>
                     <p className="text-xl font-semibold mb-6 text-blue1">Price: ₹{note.price}</p>

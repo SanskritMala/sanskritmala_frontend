@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { server } from "../main";
+import { server } from "../main"; // Server URL for API calls
 
 const UpdateNote = () => {
   const { id } = useParams();
@@ -11,9 +11,9 @@ const UpdateNote = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [coverImage, setCoverImage] = useState("");
+  const [coverImage, setCoverImage] = useState(null);
   const [coverImagePrev, setCoverImagePrev] = useState("");
-  const [pdfFile, setPdfFile] = useState("");
+  const [pdfFile, setPdfFile] = useState(null);
   const [btnLoading, setBtnLoading] = useState(false);
 
   useEffect(() => {
@@ -25,15 +25,16 @@ const UpdateNote = () => {
         setTitle(data.note.title);
         setDescription(data.note.description);
         setPrice(data.note.price);
-        setCoverImagePrev(`${server}/${data.note.coverImage}`);
+        setCoverImagePrev(data.note.coverImage); // Use correct path from server
       } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error.response?.data?.message || "Error loading note");
       }
     };
 
     fetchNote();
   }, [id]);
 
+  // Handle cover image selection
   const changeCoverImageHandler = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -41,16 +42,18 @@ const UpdateNote = () => {
     reader.readAsDataURL(file);
 
     reader.onloadend = () => {
-      setCoverImagePrev(reader.result);
-      setCoverImage(file);
+      setCoverImagePrev(reader.result); // Preview selected image
+      setCoverImage(file); // Store the file
     };
   };
 
+  // Handle PDF file selection
   const changePdfFileHandler = (e) => {
     const file = e.target.files[0];
-    setPdfFile(file);
+    setPdfFile(file); // Store the file
   };
 
+  // Handle form submission
   const submitHandler = async (e) => {
     e.preventDefault();
     setBtnLoading(true);
@@ -66,15 +69,15 @@ const UpdateNote = () => {
       const { data } = await axios.put(`${server}/api/notes/${id}`, myForm, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          token: localStorage.getItem("token"),
+          token: localStorage.getItem("token"), // Ensure the token is sent if needed
         },
       });
 
-      toast.success(data.message);
+      toast.success(data.message); // Success message
       setBtnLoading(false);
       navigate("/admin/notes"); // Redirect after successful update
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Failed to update note");
       setBtnLoading(false);
     }
   };
@@ -94,7 +97,7 @@ const UpdateNote = () => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-transform duration-300 ease-in-out"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
 
@@ -106,7 +109,7 @@ const UpdateNote = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   required
                   rows="4"
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-transform duration-300 ease-in-out"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
 
@@ -118,7 +121,7 @@ const UpdateNote = () => {
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   required
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-transform duration-300 ease-in-out"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
 
@@ -133,7 +136,7 @@ const UpdateNote = () => {
                      file:rounded-md file:border-0
                      file:text-sm file:font-semibold
                      file:bg-gray-100 file:text-gray-700
-                     hover:file:bg-gray-200 transition-transform duration-300 ease-in-out"
+                     hover:file:bg-gray-200"
                 />
                 {coverImagePrev && (
                   <img src={coverImagePrev} alt="Preview" className="mt-2 max-w-full h-auto rounded-md shadow-md" />
@@ -151,14 +154,14 @@ const UpdateNote = () => {
                      file:rounded-md file:border-0
                      file:text-sm file:font-semibold
                      file:bg-gray-100 file:text-gray-700
-                     hover:file:bg-gray-200 transition-transform duration-300 ease-in-out"
+                     hover:file:bg-gray-200"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={btnLoading}
-                className="w-full px-4 py-2 bg-blue1 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out"
+                className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out"
               >
                 {btnLoading ? "Please Wait..." : "Update"}
               </button>

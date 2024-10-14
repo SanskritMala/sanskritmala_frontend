@@ -13,7 +13,7 @@ const EbookDescription = () => {
   const [loading, setLoading] = useState(false);
 
   const { fetchEbook, ebook } = EbookData();
-  const { fetchUser, user } = UserData();
+  const { fetchUser } = UserData();
 
   useEffect(() => {
     fetchEbook(params.id);
@@ -94,7 +94,7 @@ const EbookDescription = () => {
                   <img
                     src={ebook.coverImage} // Use the full Cloudinary URL
                     alt={ebook.title}
-                    className="w-full lg:w-1/2 h-full object-cover rounded-l-lg shadow-md" // Full height image
+                    className="w-full lg:w-1/2 h-auto object-cover rounded-l-lg shadow-md" // Full height image
                   />
                   <div className="lg:ml-6 flex-1 p-6">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-blue1">{ebook.title}</h2>

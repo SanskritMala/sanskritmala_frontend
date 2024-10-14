@@ -51,63 +51,61 @@ const AdminNotes = ({ user }) => {
   }, []);
 
   // Handle cover image file selection
- // Handle cover image selection for notes
-const changeCoverImageHandler = (e) => {
-  const file = e.target.files[0];
-  if (file) {
+  const changeCoverImageHandler = (e) => {
+    const file = e.target.files[0];
+    if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-          setNoteImagePrev(reader.result); // Assuming you have a state for note image preview
-          setNoteImage(file); // Assuming you have a state for note image
+        setCoverImagePrev(reader.result); // Assuming you have a state for note image preview
+        setCoverImage(file); // Assuming you have a state for note image
       };
       reader.readAsDataURL(file);
-  }
-};
+    }
+  };
 
-// Handle note file selection (PDF)
-const changeNotePdfHandler = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-      setNoteFile(file); // Assuming you have a state for note file
-  }
-};
+  // Handle note file selection (PDF)
+  const changeNotePdfHandler = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNotePdf(file); // Assuming you have a state for note file
+    }
+  };
 
-// Submit form for adding new note
-const submitHandler = async (e) => {
-  e.preventDefault();
-  setBtnLoading(true);
+  // Submit form for adding new note
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setBtnLoading(true);
 
-  const myForm = new FormData();
-  myForm.append("title", noteTitle); // Assuming you have a state for note title
-  myForm.append("description", noteDescription); // Assuming you have a state for note description
-  myForm.append("price", notePrice); // Assuming you have a state for note price
-  myForm.append("coverImage", noteImage); // Assuming you have a state for note cover image
-  myForm.append("notePdf", noteFile); // Assuming you have a state for note file
+    const myForm = new FormData();
+    myForm.append("title", title);
+    myForm.append("description", description);
+    myForm.append("price", price);
+    myForm.append("coverImage", coverImage);
+    myForm.append("notePdf", notePdf);
 
-  try {
-      const { data } = await axios.post(`${server}/api/note/new`, myForm, {
-          headers: {
-              token: localStorage.getItem("token"),
-              "Content-Type": "multipart/form-data",
-          },
+    try {
+      const { data } = await axios.post(`${server}/api/notes/new`, myForm, {
+        headers: {
+          token: localStorage.getItem("token"),
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       toast.success(data.message);
       fetchNotes(); // Refresh the list of notes
       // Clear form fields
-      setNoteTitle(""); // Reset note title
-      setNoteDescription(""); // Reset note description
-      setNotePrice(""); // Reset note price
-      setNoteImage(null); // Reset note image to null
-      setNoteImagePrev(""); // Reset note image preview
-      setNoteFile(null); // Reset note file to null
-  } catch (error) {
+      setTitle(""); // Reset note title
+      setDescription(""); // Reset note description
+      setPrice(""); // Reset note price
+      setCoverImage(null); // Reset note image to null
+      setCoverImagePrev(""); // Reset note image preview
+      setNotePdf(null); // Reset note file to null
+    } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
-  } finally {
+    } finally {
       setBtnLoading(false);
-  }
-};
-
+    }
+  };
 
   return (
     <Layout>
@@ -131,7 +129,7 @@ const submitHandler = async (e) => {
         </div>
 
         {/* Add Note Form */}
-        <div className="lg:w-1/3">
+        <div className="lg:w-1/3 min-h-[300px]"> {/* Added minimum height */}
           <div className="bg-gray-400 p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-semibold mb-4 text-gray-900">Add Note</h2>
             <form onSubmit={submitHandler}>
@@ -147,8 +145,6 @@ const submitHandler = async (e) => {
                   className="mt-1 block w-full px-3 py-2 border border-gray-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
-
-             
 
               {/* Description Input */}
               <div className="mb-4">

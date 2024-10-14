@@ -67,7 +67,7 @@ const UpdateBook = () => {
 
       toast.success(data.message);
       setBtnLoading(false);
-      navigate("/admin/books"); // Redirect after successful update
+      navigate("/admin/book"); // Redirect after successful update
     } catch (error) {
       toast.error(error.response.data.message);
       setBtnLoading(false);
