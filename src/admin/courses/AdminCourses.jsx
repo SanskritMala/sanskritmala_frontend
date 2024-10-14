@@ -8,11 +8,9 @@ import axios from "axios";
 import { server } from "../../main";
 
 const categories = [
-  "Web Development",
-  "App Development",
-  "Game Development",
-  "Data Science",
-  "Artificial Intelligence",
+  "Basic",
+  "Intermediate",
+  "Advanced",
 ];
 
 const AdminCourses = ({ user }) => {
