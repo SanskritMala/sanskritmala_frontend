@@ -155,7 +155,7 @@ const AdminCourses = ({ user }) => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="duration" className="block text-gray-800">Duration (hours)</label>
+                <label htmlFor="duration" className="block text-gray-800">Duration (weeks)</label>
                 <input
                   type="number"
                   id="duration"
