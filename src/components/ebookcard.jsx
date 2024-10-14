@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { UserData } from "../context/userContext";
 import { EbookData } from "../context/ebookContext";
-import { server } from "../main";  // Assuming this contains the server URL
+import { server } from "../main"; // Assuming this contains the server URL
 
 const EbookCard = ({ ebook }) => {
   const navigate = useNavigate();
@@ -33,12 +33,14 @@ const EbookCard = ({ ebook }) => {
 
   return (
     <div className="bg-gray-300 text-blue1 rounded-lg shadow-xl overflow-hidden transform transition-transform hover:scale-105 hover:shadow-2xl duration-300 ease-in-out max-w-xs sm:max-w-sm lg:max-w-md h-full flex flex-col">
-      {/* Use the Cloudinary URL (assuming ebook.coverImage contains the Cloudinary URL) */}
-      <img
-        src={ebook.coverImage}  // Directly using the Cloudinary image URL stored in the database
-        alt={ebook.title}
-        className="w-full h-48 object-cover transition-transform duration-500 ease-in-out hover:scale-110"
-      />
+      <div className="w-full h-48 flex items-center justify-center bg-gray-200">
+        {/* Use the Cloudinary URL (assuming ebook.coverImage contains the Cloudinary URL) */}
+        <img
+          src={ebook.coverImage} // Directly using the Cloudinary image URL stored in the database
+          alt={ebook.title}
+          className="w-full h-full object-contain transition-transform duration-500 ease-in-out" // Use object-contain to show the full image
+        />
+      </div>
       <div className="p-6 flex-1 flex flex-col">
         <h3 className="text-2xl font-semibold mb-2">{ebook.title}</h3>
         <p className="text-gray-900 mb-2">Author: {ebook.author}</p>

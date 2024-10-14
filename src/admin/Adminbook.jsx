@@ -67,7 +67,7 @@ const AdminBooks = ({ user }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     setBtnLoading(true);
-  
+
     const myForm = new FormData();
     myForm.append("title", title);
     myForm.append("author", author);
@@ -75,7 +75,7 @@ const AdminBooks = ({ user }) => {
     myForm.append("price", price);
     myForm.append("category", category);
     myForm.append("coverImage", image);
-  
+
     try {
       const { data } = await axios.post(`${server}/api/book/new`, myForm, {
         headers: {
@@ -83,10 +83,10 @@ const AdminBooks = ({ user }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-  
+
       toast.success(data.message);
       fetchBooks(); // Refresh the list of books
-  
+
       // Reset form fields
       setTitle("");
       setAuthor("");
@@ -102,7 +102,7 @@ const AdminBooks = ({ user }) => {
       setBtnLoading(false); // Ensure loading state is reset
     }
   };
-  
+
   return (
     <Layout>
       <div className="flex flex-col bg-gray-100 lg:flex-row min-h-screen p-6 py-20">
@@ -125,7 +125,7 @@ const AdminBooks = ({ user }) => {
         </div>
 
         {/* Add Book Form */}
-        <div className="lg:w-1/3">
+        <div className="lg:w-1/3 lg:min-w-[300px] lg:max-w-[400px]"> {/* Adjusted width */}
           <div className="bg-gray-400 p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-semibold mb-4 text-gray-900">Add Book</h2>
             <form onSubmit={submitHandler}>

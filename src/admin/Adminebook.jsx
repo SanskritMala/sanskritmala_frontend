@@ -21,10 +21,9 @@ const AdminEbooks = ({ user }) => {
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-
-  const [image, setImage] = useState(null); // Initialize as null instead of an empty string
+  const [image, setImage] = useState(null); // Initialize as null
   const [imagePrev, setImagePrev] = useState("");
-  const [ebookFile, setEbookFile] = useState(null); // Initialize as null instead of an empty string
+  const [ebookFile, setEbookFile] = useState(null); // Initialize as null
   const [btnLoading, setBtnLoading] = useState(false);
   const [ebooks, setEbooks] = useState([]);
   const [fetchingEbooks, setFetchingEbooks] = useState(false);
@@ -132,7 +131,7 @@ const AdminEbooks = ({ user }) => {
 
         {/* Add eBook Form */}
         <div className="lg:w-1/3">
-          <div className="bg-gray-400 p-6 rounded-lg shadow-lg">
+          <div className="bg-gray-400 p-6 rounded-lg shadow-lg lg:min-w-[300px] lg:max-w-[400px]">
             <h2 className="text-2xl font-semibold mb-4 text-gray-900">Add eBook</h2>
             <form onSubmit={submitHandler}>
               {/* Title Input */}
@@ -193,6 +192,7 @@ const AdminEbooks = ({ user }) => {
                 <input
                   type="file"
                   id="image"
+                  accept="image/*" // Restrict to images
                   required
                   onChange={changeImageHandler}
                   className="mt-1 block w-full text-sm text-gray-800
@@ -213,6 +213,7 @@ const AdminEbooks = ({ user }) => {
                 <input
                   type="file"
                   id="ebookFile"
+                  accept="application/pdf" // Restrict to PDF files
                   required
                   onChange={changeEbookFileHandler}
                   className="mt-1 block w-full text-sm text-gray-800
@@ -240,4 +241,4 @@ const AdminEbooks = ({ user }) => {
   );
 };
 
-export default AdminEbooks
+export default AdminEbooks;

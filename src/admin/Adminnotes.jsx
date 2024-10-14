@@ -51,63 +51,63 @@ const AdminNotes = ({ user }) => {
   }, []);
 
   // Handle cover image file selection
-  const changeCoverImageHandler = (e) => {
-    const file = e.target.files[0];
-    if (file) {
+ // Handle cover image selection for notes
+const changeCoverImageHandler = (e) => {
+  const file = e.target.files[0];
+  if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setCoverImagePrev(reader.result);
-        setCoverImage(file);
+          setNoteImagePrev(reader.result); // Assuming you have a state for note image preview
+          setNoteImage(file); // Assuming you have a state for note image
       };
       reader.readAsDataURL(file);
-    }
-  };
+  }
+};
 
-  // Handle note PDF file selection
-  const changeNotePdfHandler = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setNotePdf(file);
-    }
-  };
+// Handle note file selection (PDF)
+const changeNotePdfHandler = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+      setNoteFile(file); // Assuming you have a state for note file
+  }
+};
 
-  // Submit form for adding a new note
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    setBtnLoading(true);
+// Submit form for adding new note
+const submitHandler = async (e) => {
+  e.preventDefault();
+  setBtnLoading(true);
 
-    const myForm = new FormData();
-    myForm.append("title", title);
-    myForm.append("author", author);
-    myForm.append("description", description);
-    myForm.append("price", price);
-    myForm.append("coverImage", coverImage);
-    myForm.append("notePdf", notePdf);
+  const myForm = new FormData();
+  myForm.append("title", noteTitle); // Assuming you have a state for note title
+  myForm.append("description", noteDescription); // Assuming you have a state for note description
+  myForm.append("price", notePrice); // Assuming you have a state for note price
+  myForm.append("coverImage", noteImage); // Assuming you have a state for note cover image
+  myForm.append("notePdf", noteFile); // Assuming you have a state for note file
 
-    try {
-      const { data } = await axios.post(`${server}/api/notes/new`, myForm, {
-        headers: {
-          token: localStorage.getItem("token"),
-          "Content-Type": "multipart/form-data",
-        },
+  try {
+      const { data } = await axios.post(`${server}/api/note/new`, myForm, {
+          headers: {
+              token: localStorage.getItem("token"),
+              "Content-Type": "multipart/form-data",
+          },
       });
 
       toast.success(data.message);
       fetchNotes(); // Refresh the list of notes
       // Clear form fields
-      setTitle("");
-      setAuthor("");
-      setDescription("");
-      setPrice("");
-      setCoverImage(null);
-      setCoverImagePrev("");
-      setNotePdf(null);
-    } catch (error) {
+      setNoteTitle(""); // Reset note title
+      setNoteDescription(""); // Reset note description
+      setNotePrice(""); // Reset note price
+      setNoteImage(null); // Reset note image to null
+      setNoteImagePrev(""); // Reset note image preview
+      setNoteFile(null); // Reset note file to null
+  } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
-    } finally {
+  } finally {
       setBtnLoading(false);
-    }
-  };
+  }
+};
+
 
   return (
     <Layout>
@@ -148,18 +148,7 @@ const AdminNotes = ({ user }) => {
                 />
               </div>
 
-              {/* Author Input */}
-              <div className="mb-4">
-                <label htmlFor="author" className="block text-gray-800">Author</label>
-                <input
-                  type="text"
-                  id="author"
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
-                  required
-                  className="mt-1 block w-full px-3 py-2 border border-gray-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
+             
 
               {/* Description Input */}
               <div className="mb-4">

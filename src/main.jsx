@@ -8,7 +8,7 @@ import { BookContextProvider } from './context/bookContext.jsx'; // Import BookC
 import { EbookContextProvider } from './context/ebookContext.jsx';
 import { NotesContextProvider } from './context/notesContext.jsx';
 
-export const server = 'https://sanskritmala-backend-b1au.onrender.com';
+export const server = 'http://localhost:5000';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

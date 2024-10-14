@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaCaretDown, FaBars, FaTimes } from 'react-icons/fa';
 import './header.css'; // Ensure this imports the correct CSS file
-import logo from '../../assets/sanskritmala.jpg'; // Adjust the path as necessary
+import logo from '../../assets/logo.png'; // Adjust the path as necessary
 
 const Header = ({ isAuth }) => {
   const [menuOpen, setMenuOpen] = useState(false);

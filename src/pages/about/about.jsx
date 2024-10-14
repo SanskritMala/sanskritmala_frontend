@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS styles
-
+import values from '../../assets/values.png';
+import mission from '../../assets/mission.jpg';
+import vision from '../../assets/vision.jpeg';
+import about from '../../assets/about.jpg';
 const AboutUs = () => {
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -35,9 +38,9 @@ const AboutUs = () => {
         </div>
         <div className="flex-1">
           <img 
-            src="https://i.pinimg.com/564x/fc/2f/41/fc2f41ab81dce00cd84cdc7fe0c3fcd9.jpg" 
+            src={about} 
             alt="About Us" 
-            className="w-full h-48 lg:h-60 object-cover rounded-lg shadow-lg"
+            className="w-full h-auto max-h-80 object-cover rounded-lg shadow-lg" 
           />
         </div>
       </section>
@@ -46,9 +49,9 @@ const AboutUs = () => {
       <section className="flex flex-col lg:flex-row items-center py-16 px-4 lg:px-16 gap-8" data-aos="fade-up">
         <div className="flex-1">
           <img 
-            src="https://i.pinimg.com/564x/09/3b/4e/093b4e6c876080de83d855c3a525708e.jpg" 
+            src={vision}
             alt="Vision" 
-            className="w-full h-48 lg:h-60 object-cover rounded-lg shadow-lg"
+           className="w-full h-auto max-h-80 object-cover rounded-lg shadow-lg"
           />
         </div>
         <div className="flex-1 text-center lg:text-left">
@@ -75,23 +78,23 @@ const AboutUs = () => {
           </p>
         </div>
         <div className="flex-1">
-          <img 
-            src="https://i.pinimg.com/564x/5f/8a/ee/5f8aeec2641c8d429358f9180370a473.jpg" 
-            alt="Mission" 
-            className="w-full h-48 lg:h-60 object-cover rounded-lg shadow-lg"
-          />
+        <img 
+      src={mission}
+      alt="Mission" 
+      className="w-auto h-auto max-h-80 object-contain rounded-lg shadow-lg" // Adjusted to max-h-80 with object-contain
+    />
         </div>
       </section>
 
       {/* Values Section */}
       <section className="flex flex-col lg:flex-row items-center py-16 px-4 lg:px-16 gap-8" data-aos="fade-up">
-        <div className="flex-1">
-          <img 
-            src="https://i.pinimg.com/564x/dc/4b/68/dc4b687ce9498f9b8730fbae0d0dd5af.jpg" 
-            alt="Values" 
-            className="w-full h-48 lg:h-60 object-cover rounded-lg shadow-lg"
-          />
-        </div>
+  <div className="flex-1">
+    <img 
+      src={values}
+      alt="Values" 
+      className="w-full h-auto  max-h-80 object-contain rounded-lg shadow-lg" // Changed to max-h-80 for a smaller size with object-contain
+    />
+  </div>
         <div className="flex-1 text-center lg:text-left">
           <h1 className="text-3xl lg:text-4xl font-extrabold text-blue-600 mb-4">Our Values</h1>
           <p className="text-lg">
