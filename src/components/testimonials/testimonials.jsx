@@ -9,7 +9,7 @@ const Testimonials = () => {
       message:
         "The Sanskrit courses offered here are comprehensive and easy to follow. I've gained a deeper understanding of the language, and the study materials are excellent.",
       image:
-        "https://th.bing.com/th?q=Current+Bachelor&w=120&h=120&c=1&rs=1&qlt=90&cb=1&dpr=1.3&pid=InlineBlock&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247",
+        "https://res.cloudinary.com/drcmiptb8/image/upload/v1728908802/sfd0bm2tr0k8klahvqcq.jpg",
     },
     {
       id: 2,

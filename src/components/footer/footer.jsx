@@ -1,7 +1,5 @@
-
 import { Link } from "react-router-dom";
 import { FaWhatsapp, FaFacebook, FaInstagram, FaTelegram } from "react-icons/fa";
-
 
 const Footer = () => {
   return (
@@ -10,8 +8,22 @@ const Footer = () => {
         {/* Contact Us Section */}
         <div>
           <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-          <p>Email: sanskritmala01@gmail.com</p>
-          <p>Phone:+918396068147,+917323908890</p>
+          <p>
+            Email:{" "}
+            <a href="mailto:sanskritmala01@gmail.com" className="hover:text-blue1">
+              sanskritmala01@gmail.com
+            </a>
+          </p>
+          <p>
+            Phone:{" "}
+            <a href="tel:+918396068147" className="hover:text-blue1">
+              +918396068147
+            </a>
+            ,{" "}
+            <a href="tel:+917323908890" className="hover:text-blue1">
+              +917323908890
+            </a>
+          </p>
         </div>
 
         {/* Useful Links Section */}
@@ -24,7 +36,6 @@ const Footer = () => {
             <li className="mb-2">
               <Link to="/courses" className="hover:text-blue1">Courses</Link>
             </li>
-           
           </ul>
         </div>
 
@@ -33,7 +44,7 @@ const Footer = () => {
           <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
           <div className="flex space-x-4">
             <a href="https://www.whatsapp.com/channel/0029Va64wQKJpe8j9Ewb8z37" target="_blank" rel="noopener noreferrer" className="text-gray-100 hover:text-blue1">
-              <FaWhatsapp  size={24} />
+              <FaWhatsapp size={24} />
             </a>
             <a href="https://www.facebook.com/sanskritmalas?mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer" className="text-gray-100 hover:text-blue1">
               <FaFacebook size={24} />
@@ -49,7 +60,7 @@ const Footer = () => {
       </div>
 
       {/* Copyright Statement */}
-      <div className="mt-10 text-center   pt-6">
+      <div className="mt-10 text-center pt-6">
         <p>&copy; 2024 SanskritMala. All Rights Reserved.</p>
       </div>
     </footer>
