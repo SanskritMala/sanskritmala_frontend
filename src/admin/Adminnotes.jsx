@@ -57,8 +57,8 @@ const changeCoverImageHandler = (e) => {
   if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-          setNoteImagePrev(reader.result); // Assuming you have a state for note image preview
-          setNoteImage(file); // Assuming you have a state for note image
+          setCoverImagePrev(reader.result); // Assuming you have a state for note image preview
+          setCoverImage(file); // Assuming you have a state for note image
       };
       reader.readAsDataURL(file);
   }
@@ -68,7 +68,7 @@ const changeCoverImageHandler = (e) => {
 const changeNotePdfHandler = (e) => {
   const file = e.target.files[0];
   if (file) {
-      setNoteFile(file); // Assuming you have a state for note file
+      setNotePdf(file); // Assuming you have a state for note file
   }
 };
 
@@ -78,11 +78,11 @@ const submitHandler = async (e) => {
   setBtnLoading(true);
 
   const myForm = new FormData();
-  myForm.append("title", noteTitle); // Assuming you have a state for note title
-  myForm.append("description", noteDescription); // Assuming you have a state for note description
-  myForm.append("price", notePrice); // Assuming you have a state for note price
-  myForm.append("coverImage", noteImage); // Assuming you have a state for note cover image
-  myForm.append("notePdf", noteFile); // Assuming you have a state for note file
+  myForm.append("title", nTitle); // Assuming you have a state for note title
+  myForm.append("description", Description); // Assuming you have a state for note description
+  myForm.append("price", Price); // Assuming you have a state for note price
+  myForm.append("coverImage", coverImage); // Assuming you have a state for note cover image
+  myForm.append("notePdf", notePdf); // Assuming you have a state for note file
 
   try {
       const { data } = await axios.post(`${server}/api/note/new`, myForm, {
@@ -95,12 +95,12 @@ const submitHandler = async (e) => {
       toast.success(data.message);
       fetchNotes(); // Refresh the list of notes
       // Clear form fields
-      setNoteTitle(""); // Reset note title
-      setNoteDescription(""); // Reset note description
-      setNotePrice(""); // Reset note price
-      setNoteImage(null); // Reset note image to null
-      setNoteImagePrev(""); // Reset note image preview
-      setNoteFile(null); // Reset note file to null
+      setTitle(""); // Reset note title
+      setNDescription(""); // Reset note description
+      setPrice(""); // Reset note price
+      setCoverImage(null); // Reset note image to null
+      setCoverImagePrev(""); // Reset note image preview
+      setNotePdf(null); // Reset note file to null
   } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
   } finally {
