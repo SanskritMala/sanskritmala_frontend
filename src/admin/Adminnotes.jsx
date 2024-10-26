@@ -85,7 +85,7 @@ const submitHandler = async (e) => {
   myForm.append("notePdf", notePdf); // Assuming you have a state for note file
 
   try {
-      const { data } = await axios.post(`${server}/api/note/new`, myForm, {
+      const { data } = await axios.post(`${server}/api/notes/new`, myForm, {
           headers: {
               token: localStorage.getItem("token"),
               "Content-Type": "multipart/form-data",
