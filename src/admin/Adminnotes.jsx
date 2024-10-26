@@ -78,7 +78,7 @@ const submitHandler = async (e) => {
   setBtnLoading(true);
 
   const myForm = new FormData();
-  myForm.append("title", nTitle); // Assuming you have a state for note title
+  myForm.append("title", Title); // Assuming you have a state for note title
   myForm.append("description", Description); // Assuming you have a state for note description
   myForm.append("price", Price); // Assuming you have a state for note price
   myForm.append("coverImage", coverImage); // Assuming you have a state for note cover image
