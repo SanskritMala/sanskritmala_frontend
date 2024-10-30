@@ -56,13 +56,19 @@ const AdminNotes = ({ user }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+<<<<<<< HEAD
         setCoverImagePrev(reader.result); // Assuming you have a state for note image preview
         setCoverImage(file); // Assuming you have a state for note image
+=======
+          setCoverImagePrev(reader.result); // Assuming you have a state for note image preview
+          setCoverImage(file); // Assuming you have a state for note image
+>>>>>>> af3112395ee28310d58905ce69fd11ae3621f96d
       };
       reader.readAsDataURL(file);
     }
   };
 
+<<<<<<< HEAD
   // Handle note file selection (PDF)
   const changeNotePdfHandler = (e) => {
     const file = e.target.files[0];
@@ -70,12 +76,22 @@ const AdminNotes = ({ user }) => {
       setNotePdf(file); // Assuming you have a state for note file
     }
   };
+=======
+// Handle note file selection (PDF)
+const changeNotePdfHandler = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+      setNotePdf(file); // Assuming you have a state for note file
+  }
+};
+>>>>>>> af3112395ee28310d58905ce69fd11ae3621f96d
 
   // Submit form for adding new note
   const submitHandler = async (e) => {
     e.preventDefault();
     setBtnLoading(true);
 
+<<<<<<< HEAD
     const myForm = new FormData();
     myForm.append("title", title);
     myForm.append("description", description);
@@ -89,18 +105,41 @@ const AdminNotes = ({ user }) => {
           token: localStorage.getItem("token"),
           "Content-Type": "multipart/form-data",
         },
+=======
+  const myForm = new FormData();
+  myForm.append("title", title); // Assuming you have a state for note title
+  myForm.append("description", description); // Assuming you have a state for note description
+  myForm.append("price", price); // Assuming you have a state for note price
+  myForm.append("coverImage", coverImage); // Assuming you have a state for note cover image
+  myForm.append("notePdf", notePdf); // Assuming you have a state for note file
+
+  try {
+      const { data } = await axios.post(`${server}/api/notes/new`, myForm, {
+          headers: {
+              token: localStorage.getItem("token"),
+              "Content-Type": "multipart/form-data",
+          },
+>>>>>>> af3112395ee28310d58905ce69fd11ae3621f96d
       });
 
       toast.success(data.message);
       fetchNotes(); // Refresh the list of notes
       // Clear form fields
       setTitle(""); // Reset note title
+<<<<<<< HEAD
       setDescription(""); // Reset note description
+=======
+      setNDescription(""); // Reset note description
+>>>>>>> af3112395ee28310d58905ce69fd11ae3621f96d
       setPrice(""); // Reset note price
       setCoverImage(null); // Reset note image to null
       setCoverImagePrev(""); // Reset note image preview
       setNotePdf(null); // Reset note file to null
+<<<<<<< HEAD
     } catch (error) {
+=======
+  } catch (error) {
+>>>>>>> af3112395ee28310d58905ce69fd11ae3621f96d
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setBtnLoading(false);
