@@ -40,7 +40,7 @@ const NotesCard = ({ note }) => {
       />
       <div className="p-6 flex-1 flex flex-col">
         <h3 className="text-2xl font-semibold mb-2">{note.title}</h3>
-        <p className="text-gray-900 mb-2">Price: ₹{note.price}</p>
+        <p className="text-gray-900 mb-2">Price: Free</p>
 
         <div className="flex-1 flex items-end">
           {isAuth ? (

@@ -54,8 +54,8 @@ const Header = ({ isAuth }) => {
           {dropdownOpen && (
             <div className='dropdown-content'>
               <Link to={'/courses'} className={isActive('/courses')} onClick={() => { setMenuOpen(false); setDropdownOpen(false); }}>Courses</Link>
-              <Link to={'/notes'} className={isActive('/notes')} onClick={() => { setMenuOpen(false); setDropdownOpen(false); }}>Notes</Link>
-              <Link to={'/ebooks'} className={isActive('/ebooks')} onClick={() => { setMenuOpen(false); setDropdownOpen(false); }}>E-Books</Link>
+              <Link to={'/notes'} className={isActive('/notes')} onClick={() => { setMenuOpen(false); setDropdownOpen(false); }}>Free Notes</Link>
+              <Link to={'/ebooks'} className={isActive('/ebooks')} onClick={() => { setMenuOpen(false); setDropdownOpen(false); }}>Paid E-Books</Link>
               <Link to={'/test-series'} className={isActive('/test-series')} onClick={() => { setMenuOpen(false); setDropdownOpen(false); }}>Test Series</Link>
               <Link to={'/book-store'} className={isActive('/book-store')} onClick={() => { setMenuOpen(false); setDropdownOpen(false); }}>Book Store</Link>
             </div>

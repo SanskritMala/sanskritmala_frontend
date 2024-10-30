@@ -89,18 +89,24 @@ const EbookDescription = () => {
         <>
           {ebook && (
             <div className="container mx-auto px-4 py-28 sm:py-28 lg:py-28">
-              <div className="bg-gray-300 text-blue1 rounded-lg shadow-xl overflow-hidden w-full max-w-3xl mx-auto transition-transform transform hover:scale-105 duration-300 ease-in-out">
+              <div className="bg-gray-300 text-blue1 rounded-lg shadow-xl w-full max-w-3xl mx-auto transition-transform transform hover:scale-105 duration-300 ease-in-out">
                 <div className="flex flex-col lg:flex-row">
-                  <img
-                    src={ebook.coverImage} // Use the full Cloudinary URL
-                    alt={ebook.title}
-                    className="w-full lg:w-1/2 h-auto object-cover rounded-l-lg shadow-md" // Full height image
-                  />
+                  <div className="lg:w-1/2">
+                    <img
+                      src={ebook.coverImage}
+                      alt={ebook.title}
+                      className="w-full h-auto object-cover rounded-l-lg shadow-md"
+                    />
+                  </div>
                   <div className="lg:ml-6 flex-1 p-6">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-blue1">{ebook.title}</h2>
-                    <p className="text-base sm:text-lg lg:text-xl mb-2 text-gray-900">Author: <span className="font-semibold">{ebook.author}</span></p>
+                    <p className="text-base sm:text-lg lg:text-xl mb-2 text-gray-900">
+                      Author: <span className="font-semibold">{ebook.author}</span>
+                    </p>
                     <p className="text-base sm:text-lg lg:text-xl mb-4 text-gray-900">{ebook.description}</p>
-                    <p className="text-lg sm:text-xl lg:text-2xl font-semibold mb-6 text-blue1">Price: ₹{ebook.price}</p>
+                    <p className="text-lg sm:text-xl lg:text-2xl font-semibold mb-6 text-blue1">
+                      Price: ₹{ebook.price}
+                    </p>
 
                     <button
                       onClick={handlePurchase}

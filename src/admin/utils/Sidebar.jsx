@@ -44,7 +44,7 @@ const Sidebar = () => {
             <div className="text-xl mr-3">
               <FaBook />
             </div>
-            <span>eBooks</span>
+            <span>Paid Notes/eBooks</span>
           </Link>
         </li>
 
@@ -53,7 +53,7 @@ const Sidebar = () => {
             <div className="text-xl mr-3">
               <FaStickyNote />
             </div>
-            <span>Notes</span>
+            <span> Free Notes</span>
           </Link>
         </li>
 
